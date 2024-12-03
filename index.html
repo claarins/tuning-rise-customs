@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tuning</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            width: 800px;
+            text-align: center;
+        }
+        .option {
+            margin-bottom: 15px;
+            display: inline-block;
+            width: 48%;
+        }
+        .option label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .option select {
+            width: 90%;
+            padding: 5px;
+        }
+        .total {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin: 20px 0;
+        }
+        .button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .customer-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        .customer-info label {
+            flex: 1;
+            margin-right: 20px;
+        }
+        .customer-info input {
+            width: 100%;
+        }
+        .full-width-option {
+            width: 100%;
+            text-align: left;
+            margin-top: 15px;
+        }
+        .full-width-option select {
+            width: 95%;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 500px;
+            color: #333;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        .modal-content h2 {
+            color: #d9534f;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .modal-content label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .modal-content input[type="text"] {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .modal-content input[type="file"] {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .confirm-button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="riseLogo.png" alt="Rise Customs Logo" style="display: block; margin: 0 auto 20px; width: 150px; filter: drop-shadow(2px 2px 5px #000);">
+        <h1>Tunning</h1>
+
+        <div class="customer-info">
+            <label>Passaporte do Cliente: <input type="text" id="passaporteCliente"></label>
+            <label>Nome do Cliente: <input type="text" id="nomeCliente"></label>
+            <label>Modelo do Carro: <input type="text" id="nomeModeloCarro"></label>
+        </div>
+
+        <div class="option">
+            <label>Motor</label>
+            <select id="engine" onchange="calcularTotal()">
+                <option value="0">Nível 0</option>
+                <option value="25000">Nível 1</option>
+                <option value="50000">Nível 2</option>
+                <option value="75000">Nível 3</option>
+                <option value="100000">Nível 4</option>
+            </select>
+        </div>
+
+        <div class="option">
+            <label>Freio</label>
+            <select id="brake" onchange="calcularTotal()">
+                <option value="0">Nível 0</option>
+                <option value="12500">Nível 1</option>
+                <option value="25000">Nível 2</option>
+                <option value="37500">Nível 3</option>
+            </select>
+        </div>
+
+        <div class="option">
+            <label>Transmissão</label>
+            <select id="transmission" onchange="calcularTotal()">
+                <option value="0">Nível 0</option>
+                <option value="17000">Nível 1</option>
+                <option value="34000">Nível 2</option>
+                <option value="51000">Nível 3</option>
+            </select>
+        </div>
+
+        <div class="option">
+            <label>Suspensão</label>
+            <select id="suspension" onchange="calcularTotal()">
+                <option value="0">Nível 0</option>
+                <option value="12500">Nível 1</option>
+                <option value="25000">Nível 2</option>
+                <option value="37500">Nível 3</option>
+                <option value="50000">Nível 4</option>
+            </select>
+        </div>
+
+        <div class="option">
+            <label>Turbo</label>
+            <select id="turbo" onchange="calcularTotal()">
+                <option value="0">Nível 0</option>
+                <option value="100000">Nível 1</option>
+            </select>
+        </div>
+
+        <div class="option">
+            <label>Blindagem</label>
+            <select id="blindagem" onchange="calcularTotal()">
+                <option value="0">Nível 0</option>
+                <option value="60000">Nível 1</option>
+                <option value="120000">Nível 2</option>
+                <option value="180000">Nível 3</option>
+                <option value="240000">Nível 4</option>
+                <option value="300000">Nível 5</option>
+            </select>
+        </div>
+
+        <div class="total">
+            Total: R$ <span id="total">0,00</span>
+        </div>
+
+        <button class="button" onclick="abrirModal()">Gerar Nota Fiscal</button>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="fecharModal()">&times;</span>
+            <h2>Confirmação</h2>
+            <label>Nome Mecânico:</label>
+            <input type="text" id="codigoMecanico">
+            <label>Imagem do Veículo:</label>
+            <input type="file" id="imagemVeiculo" accept="image/*">
+            <button class="confirm-button" onclick="confirmarENviar()">Confirmar e Enviar</button>
+        </div>
+    </div>
+
+    <script>
+        function calcularTotal() {
+            const engine = parseInt(document.getElementById('engine').value);
+            const brake = parseInt(document.getElementById('brake').value);
+            const transmission = parseInt(document.getElementById('transmission').value);
+            const suspension = parseInt(document.getElementById('suspension').value);
+            const turbo = parseInt(document.getElementById('turbo').value);
+            const blindagem = parseInt(document.getElementById('blindagem').value);
+
+            let total = engine + brake + transmission + suspension + turbo + blindagem;
+            total += total * 0.25; // Adiciona 25% ao valor total
+
+            document.getElementById('total').innerText = total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function abrirModal() {
+            const passaporteCliente = document.getElementById('passaporteCliente').value;
+            const nomeCliente = document.getElementById('nomeCliente').value;
+            const nomeModeloCarro = document.getElementById('nomeModeloCarro').value;
+            const engine = parseInt(document.getElementById('engine').value);
+            const brake = parseInt(document.getElementById('brake').value);
+            const transmission = parseInt(document.getElementById('transmission').value);
+            const suspension = parseInt(document.getElementById('suspension').value);
+            const turbo = parseInt(document.getElementById('turbo').value);
+            const blindagem = parseInt(document.getElementById('blindagem').value);
+
+            if (passaporteCliente === '' || nomeCliente === '' || nomeModeloCarro === '') {
+                alert('Por favor, preencha todos os dados do cliente antes de gerar a nota fiscal.');
+                return;
+            }
+
+            if (engine === 0 && brake === 0 && transmission === 0 && suspension === 0 && turbo === 0 && blindagem === 0) {
+                alert('Por favor, selecione ao menos um item de tuning antes de gerar a nota fiscal.');
+                return;
+            }
+
+            document.getElementById('modal').style.display = 'block';
+        }
+
+        function fecharModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        function confirmarENviar() {
+    const passaporteCliente = document.getElementById('passaporteCliente').value;
+    const nomeCliente = document.getElementById('nomeCliente').value;
+    const nomeModeloCarro = document.getElementById('nomeModeloCarro').value;
+    const codigoMecanico = document.getElementById('codigoMecanico').value;
+    const imagemVeiculo = document.getElementById('imagemVeiculo').files[0];
+
+    if (passaporteCliente === '' || nomeCliente === '' || nomeModeloCarro === '' || codigoMecanico === '' || !imagemVeiculo) {
+        alert('Por favor, preencha todos os dados e selecione uma imagem antes de confirmar.');
+        return;
+    }
+
+    const engine = parseInt(document.getElementById('engine').value);
+    const brake = parseInt(document.getElementById('brake').value);
+    const transmission = parseInt(document.getElementById('transmission').value);
+    const suspension = parseInt(document.getElementById('suspension').value);
+    const turbo = parseInt(document.getElementById('turbo').value);
+    const blindagem = parseInt(document.getElementById('blindagem').value);
+
+    let total = engine + brake + transmission + suspension + turbo + blindagem;
+    total += total * 0.25; // Adiciona 25% ao valor total
+
+    const modifications = [];
+    if (engine !== 0) modifications.push(`Engine: Nível ${document.getElementById('engine').selectedIndex}`);
+    if (brake !== 0) modifications.push(`Brake: Nível ${document.getElementById('brake').selectedIndex}`);
+    if (transmission !== 0) modifications.push(`Transmission: Nível ${document.getElementById('transmission').selectedIndex}`);
+    if (suspension !== 0) modifications.push(`Suspension: Nível ${document.getElementById('suspension').selectedIndex}`);
+    if (turbo !== 0) modifications.push(`Turbo: Nível ${document.getElementById('turbo').selectedIndex}`);
+    if (blindagem !== 0) modifications.push(`Blindagem: Nível ${document.getElementById('blindagem').selectedIndex}`);
+
+    const webhookUrl = 'https://discord.com/api/webhooks/1313615010936918190/XQ1Ics_UQXz0fihXPlWyB0DefF2bcBaOgDi9gsPDzQON3rCIxY4VflRfhyTR5mL_-qV2';
+    const formData = new FormData();
+    formData.append('file', imagemVeiculo);
+
+    const embed = {
+        title: `Nota Fiscal - ${nomeCliente}`,
+        fields: [
+            { name: 'Cliente', value: nomeCliente, inline: true },
+            { name: 'Mecânico', value: codigoMecanico, inline: true },
+            { name: 'Veículo', value: nomeModeloCarro, inline: true },
+            { name: 'Lista de Modificações', value: modifications.join('\n') },
+            { name: 'Valor da Nota', value: `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` }
+        ]
+    };
+
+    formData.append('payload_json', JSON.stringify({ embeds: [embed] }));
+
+    fetch(webhookUrl, {
+        method: 'POST',
+        body: formData
+    }).then(response => {
+        if (response.ok) {
+            alert('Nota Fiscal gerada e enviada com sucesso para o Discord!');
+        } else {
+            alert('Erro ao enviar a Nota Fiscal para o Discord.');
+        }
+    }).catch(error => {
+        console.error('Erro:', error);
+        alert('Erro ao enviar a Nota Fiscal para o Discord.');
+    });
+
+    fecharModal();
+}
+</script>
+</body>
+</html>
